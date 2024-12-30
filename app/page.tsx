@@ -22,6 +22,7 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
           <li>koko.zhong demo nextjs app</li>
+          <h3>new Text</h3>
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
