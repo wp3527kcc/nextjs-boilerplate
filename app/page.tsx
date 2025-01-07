@@ -3,6 +3,8 @@ import {Table} from 'antd'
 import Counter from './components/Count'
 import {neon} from "@neondatabase/serverless";
 import Link from "next/link";
+import {getRedisVal} from "@/app/action";
+import {countRedisKey} from "@/app/constants";
 
 const tableColumns = [
     {
@@ -21,6 +23,7 @@ const tableColumns = [
 ]
 export default async function Home() {
     const sql = neon(`${process.env.DATABASE_URL}`);
+    const initCount = await getRedisVal(countRedisKey)
     const data = await sql('SELECT * FROM users') as { id: string, name: string, email: string }[];
 
     return (
@@ -35,7 +38,7 @@ export default async function Home() {
                     height={38}
                     priority
                 />
-                <Counter/>
+                <Counter initialCount={initCount} />
             </main>
             <Link href={'/demo'}>to demo</Link>
             <section className="flex flex-col gap-8 row-start-2 items-center sm:items-start">

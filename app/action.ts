@@ -41,7 +41,8 @@ export async function syncRedis(key: string, value: number) {
 
 export async function getRedisVal(key: string) {
     const res = await fetch(`https://brief-kid-53738.upstash.io/get/${key}`, {
-        headers: redisHeaders
+        headers: redisHeaders,
+        cache: 'no-store'
     })
     const {result} = await res.json()
     return +result

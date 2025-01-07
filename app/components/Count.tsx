@@ -2,7 +2,8 @@
 
 import {CSSProperties, useState, useEffect} from "react";
 import {Button, Space, Table, Input, message} from "antd";
-import {createComment, fetchComents, getRedisVal, syncRedis} from '../action'
+import {createComment, fetchComents, syncRedis} from '../action'
+import {countRedisKey} from "@/app/constants";
 
 const btnStyle: CSSProperties = {
     border: "1px solid #fa541c",
@@ -10,11 +11,10 @@ const btnStyle: CSSProperties = {
     padding: "4px 12px",
     borderRadius: 4,
 }
-const countRedisKey = '$*()_keyCount'
 
-function Counter() {
+function Counter({initialCount}: {initialCount: number}) {
     const [messageApi, contextHolder] = message.useMessage();
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(initialCount)
     const [commentLoading, setCommentLoading] = useState<boolean>(false)
     const [syncLoading, setSyncLoading] = useState<boolean>(false)
     const [inputValue, setInputValue] = useState('')
@@ -42,9 +42,6 @@ function Counter() {
 
     useEffect(() => {
         getCommentList()
-        getRedisVal(countRedisKey).then(initCount => {
-            setCount(initCount)
-        })
     }, []);
 
     return (
