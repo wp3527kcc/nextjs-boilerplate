@@ -2,7 +2,7 @@
 
 import {CSSProperties, useState, useEffect} from "react";
 import {Button, Space, Table, Input, message} from "antd";
-import {createComment, fetchComents} from '../action'
+import {createComment, fetchComents, getRedisVal, syncRedis} from '../action'
 
 const btnStyle: CSSProperties = {
     border: "1px solid #fa541c",
@@ -10,11 +10,13 @@ const btnStyle: CSSProperties = {
     padding: "4px 12px",
     borderRadius: 4,
 }
+const countRedisKey = '$*()_keyCount'
 
 function Counter() {
     const [messageApi, contextHolder] = message.useMessage();
     const [count, setCount] = useState(0)
     const [commentLoading, setCommentLoading] = useState<boolean>(false)
+    const [syncLoading, setSyncLoading] = useState<boolean>(false)
     const [inputValue, setInputValue] = useState('')
     const [commentList, setCommentList] = useState<{ comment: string }[]>([])
 
@@ -29,22 +31,48 @@ function Counter() {
         })
     }
 
+    async function setCountAndSync(newCount: number) {
+        setSyncLoading(true)
+        syncRedis(countRedisKey, newCount).then(() => {
+        }).finally(() => {
+            setSyncLoading(false)
+            setCount(newCount)
+        })
+    }
+
     useEffect(() => {
         getCommentList()
+        getRedisVal(countRedisKey).then(initCount => {
+            setCount(initCount)
+        })
     }, []);
 
     return (
         <section>
             {contextHolder}
             <Space>
-                <button onClick={() => setCount(count + 1)} style={btnStyle}>+</button>
-                <button onClick={() => setCount(count - 1)} style={btnStyle}>-</button>
+                <Button
+                    loading={syncLoading}
+                    onClick={() => {
+                        setCountAndSync(count + 1)
+                    }} style={btnStyle}>+
+                </Button>
+                <Button
+                    type={'dashed'}
+                    loading={syncLoading}
+                    onClick={() => {
+                        setCountAndSync(count - 1)
+                    }} style={btnStyle}>-
+                </Button>
                 <span>{count}</span>
                 <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
-                <Button onClick={() => createComment(inputValue).then(() => {
+                <Button onClick={() => createComment(inputValue).then((fileUrl) => {
                     setInputValue('')
                     getCommentList()
                     messageApi.success('添加成功')
+                    setTimeout(() => {
+                        window.open(fileUrl)
+                    }, 800)
                 })}>
                     append comment
                 </Button>
@@ -54,9 +82,12 @@ function Counter() {
                     拉取列表
                 </Button>
             </Space>
-            <Table dataSource={commentList} columns={[{key: 'comment', dataIndex: 'comment', title: '评论内容'}]}
+            <Table dataSource={commentList.filter(Boolean)}
+                   columns={[{key: 'comment', dataIndex: 'comment', title: '评论内容'}]}
                    loading={commentLoading}
-                   pagination={{pageSize: 5}}/>
+                   pagination={{pageSize: 5}}
+                   style={{marginTop: 20}}
+            />
         </section>
     )
 }

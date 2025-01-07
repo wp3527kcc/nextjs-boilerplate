@@ -43,7 +43,7 @@ export default async function Home() {
                     dataSource={data}
                     rowKey={'id'}
                     columns={tableColumns}
-                    pagination={false}
+                    pagination={{pageSize: 5}}
                 />
             </section>
         </div>
