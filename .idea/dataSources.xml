@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Redis" uuid="e91f3ed8-0942-466b-a69e-52bcdb77fcf1">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://rediss://default:AdHqAAIjcDE2ZjRkZGFmYzUyODA0YjQ2YTBkOTM4Y2U3Y2E5M2I1NXAxMA@brief-kid-53738.upstash.io:6379/0</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="Redis [2]" uuid="bf65ef06-34a0-43bd-bee1-67c915e83c49">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://rediss://default:AdHqAAIjcDE2ZjRkZGFmYzUyODA0YjQ2YTBkOTM4Y2U3Y2E5M2I1NXAxMA@brief-kid-53738.upstash.io:6379/0</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

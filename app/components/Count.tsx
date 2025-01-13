@@ -12,7 +12,7 @@ const btnStyle: CSSProperties = {
     borderRadius: 4,
 }
 
-function Counter({initialCount}: {initialCount: number}) {
+function Counter({initialCount}: { initialCount: number }) {
     const [messageApi, contextHolder] = message.useMessage();
     const [count, setCount] = useState(initialCount)
     const [commentLoading, setCommentLoading] = useState<boolean>(false)
@@ -31,12 +31,12 @@ function Counter({initialCount}: {initialCount: number}) {
         })
     }
 
-    async function setCountAndSync(newCount: number) {
+    async function setCountAndSync(isAdd: boolean) {
         setSyncLoading(true)
-        syncRedis(countRedisKey, newCount).then(() => {
+        syncRedis(countRedisKey, isAdd).then((newResp) => {
+            setCount(newResp.result)
         }).finally(() => {
             setSyncLoading(false)
-            setCount(newCount)
         })
     }
 
@@ -51,14 +51,14 @@ function Counter({initialCount}: {initialCount: number}) {
                 <Button
                     loading={syncLoading}
                     onClick={() => {
-                        setCountAndSync(count + 1)
+                        setCountAndSync(true)
                     }} style={btnStyle}>+
                 </Button>
                 <Button
                     type={'dashed'}
                     loading={syncLoading}
                     onClick={() => {
-                        setCountAndSync(count - 1)
+                        setCountAndSync(false)
                     }} style={btnStyle}>-
                 </Button>
                 <span>{count}</span>
@@ -77,6 +77,15 @@ function Counter({initialCount}: {initialCount: number}) {
                     getCommentList()
                 }}>
                     拉取列表
+                </Button>
+                <Button onClick={() => {
+                    fetch('/api/submit', {
+                        method: 'POST',
+                        headers: {"content-type": "application/json"},
+                        body: JSON.stringify({name: inputValue, email: '777888@qq.com'}),
+                    }).then(res => res.json()).then(res => console.log(res))
+                }}>
+                    POST
                 </Button>
             </Space>
             <Table dataSource={commentList.filter(Boolean)}

@@ -1,6 +1,10 @@
 'use server'
 import {neon} from "@neondatabase/serverless"; // Your database client
 import {put} from "@vercel/blob";
+import {
+    // cookies,
+    headers
+} from 'next/headers'
 
 const sql = neon(`${process.env.DATABASE_URL}`);
 
@@ -33,17 +37,27 @@ const redisHeaders = new Headers({
     Authorization: 'Bearer AdHqAAIjcDE2ZjRkZGFmYzUyODA0YjQ2YTBkOTM4Y2U3Y2E5M2I1NXAxMA'
 })
 
-export async function syncRedis(key: string, value: number) {
-    await fetch(`https://brief-kid-53738.upstash.io/set/${key}/${value}`, {
+export async function syncRedis(key: string, isAdd = false) {
+    const resp = await fetch(`https://brief-kid-53738.upstash.io/${isAdd ? 'incr' : 'decr'}/${key}`, {
         headers: redisHeaders
     })
+    const result = await resp.json();
+    return result
 }
 
 export async function getRedisVal(key: string) {
+    const acceptValue = (await headers()).get('accept')
+    console.log('acceptValue', acceptValue)
     const res = await fetch(`https://brief-kid-53738.upstash.io/get/${key}`, {
         headers: redisHeaders,
-        cache: 'no-store'
+        // cache: 'no-store',
+        // next: { revalidate: 10 },
     })
     const {result} = await res.json()
     return +result
+}
+
+export async function getUserList() {
+    const data = await sql('SELECT * FROM users') as { id: string, name: string, email: string }[];
+    return data;
 }
