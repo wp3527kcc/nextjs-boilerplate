@@ -1,9 +1,9 @@
 import Image from "next/image";
 import {Table} from 'antd'
-// import {use} from 'react'
+import {Suspense} from 'react'
 import Counter from './components/Count'
 import Link from "next/link";
-import { connection } from 'next/server'
+import {connection} from 'next/server'
 import {getRedisVal, getUserList} from "@/app/action";
 import {countRedisKey} from "@/app/constants";
 
@@ -25,7 +25,7 @@ const tableColumns = [
 export default async function Home() {
     console.log('rerender', new Date());
     await connection()
-    const initCount = await getRedisVal(countRedisKey)
+    const posts = getRedisVal(countRedisKey)
     const data = await getUserList()
 
     return (
@@ -40,7 +40,17 @@ export default async function Home() {
                     height={38}
                     priority
                 />
-                <Counter initialCount={initCount}/>
+                <Image
+                    className="dark:invert"
+                    src='/output.png'
+                    alt="Next.js logo"
+                    width={180}
+                    height={38}
+                    priority
+                />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Counter posts={posts}/>
+                </Suspense>
             </main>
             <Link href={'/demo'}>to demo</Link>
             <section className="flex flex-col gap-8 row-start-2 items-center sm:items-start">

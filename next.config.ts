@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-    // distDir: 'build',
+    // images: {
+    //     loader: 'custom',
+    //     loaderFile: './my-loader.ts',
+    // },
 };
 
 export default nextConfig;

@@ -1,6 +1,6 @@
 "use client"
 
-import {CSSProperties, useState, useEffect} from "react";
+import {CSSProperties, useState, useEffect, use} from "react";
 import {Button, Space, Table, Input, message} from "antd";
 import {createComment, fetchComents, syncRedis} from '../action'
 import {countRedisKey} from "@/app/constants";
@@ -12,11 +12,12 @@ const btnStyle: CSSProperties = {
     borderRadius: 4,
 }
 
-function Counter({initialCount}: { initialCount: number }) {
+function Counter({posts}: { posts: Promise<number> }) {
     const [messageApi, contextHolder] = message.useMessage();
+    const initialCount = use(posts)
     const [count, setCount] = useState(initialCount)
-    const [commentLoading, setCommentLoading] = useState<boolean>(false)
-    const [syncLoading, setSyncLoading] = useState<boolean>(false)
+    const [commentLoading, setCommentLoading] = useState(false)
+    const [syncLoading, setSyncLoading] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [commentList, setCommentList] = useState<{ comment: string }[]>([])
 

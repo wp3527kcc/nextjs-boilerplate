@@ -7,6 +7,7 @@ import {
 } from 'next/headers'
 
 const sql = neon(`${process.env.DATABASE_URL}`);
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function fetchUsers(key: string) {
     const data = await sql('SELECT * FROM users') as { id: string, name: string, email: string }[];
@@ -54,6 +55,7 @@ export async function getRedisVal(key: string) {
         // next: { revalidate: 10 },
     })
     const {result} = await res.json()
+    await sleep(500)
     return +result
 }
 
