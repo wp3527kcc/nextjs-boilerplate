@@ -32,7 +32,7 @@ function logToFeiShu(
     });
 }
 
-export async function POST() {
+export async function GET() {
     const now = new Date();
     try {
         logToFeiShu('has request ' + now);
