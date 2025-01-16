@@ -36,20 +36,20 @@
 //     }
 // }
 // logToFeiShu('hello world')
-const fs = require('fs');
-
-async function start() {
-    const file = fs.readFileSync('../../../public/icon.png',);
-    console.log(file)
-    const response = await fetch(
-        `http://localhost:3000/api/upload?filename=kcc123.png`,
-        {
-            method: 'POST',
-            body: file,
-        },
-    );
-    const result = await response.json();
-    console.log(result);
-}
-
-start()
+// const fs = require('fs');
+//
+// async function start() {
+//     const file = fs.readFileSync('../../../public/icon.png',);
+//     console.log(file)
+//     const response = await fetch(
+//         `http://localhost:3000/api/upload?filename=kcc123.png`,
+//         {
+//             method: 'POST',
+//             body: file,
+//         },
+//     );
+//     const result = await response.json();
+//     console.log(result);
+// }
+//
+// start()
