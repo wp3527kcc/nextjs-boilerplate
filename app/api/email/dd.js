@@ -1,6 +1,6 @@
 let count = 0;
 
-function logToFeiShu(
+async function logToFeiShu(
     content,
     webhookUrl = "https://open.feishu.cn/open-apis/bot/v2/hook/ad15802e-b359-451e-931e-78af5fc8c68d",
     maxCount = 20
@@ -9,7 +9,8 @@ function logToFeiShu(
     // 限制一下发送次数，避免无限发送
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     if (count++ < maxCount) {
-        fetch(webhookUrl, {
+        console.time('t1')
+        await fetch(webhookUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,7 +30,7 @@ function logToFeiShu(
                 msg_type: "interactive",
             }),
         });
+        console.timeEnd('t1')
     }
 }
-
 logToFeiShu('hello world')
