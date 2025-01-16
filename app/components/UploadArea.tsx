@@ -55,6 +55,7 @@ const App: React.FC = () => {
 
     return (
         <>
+            {contextHolder}
             <Upload {...props}>
                 <Button icon={<UploadOutlined/>}>Select File</Button>
             </Upload>
