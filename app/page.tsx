@@ -2,6 +2,7 @@ import Image from "next/image";
 import {Table} from 'antd'
 import {Suspense} from 'react'
 import Counter from './components/Count'
+import UploadArea from "@/app/components/UploadArea";
 import Link from "next/link";
 import {connection} from 'next/server'
 import {getRedisVal, getUserList} from "@/app/action";
@@ -50,6 +51,9 @@ export default async function Home() {
                 />
                 <Suspense fallback={<div>Loading...</div>}>
                     <Counter posts={posts}/>
+                </Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <UploadArea/>
                 </Suspense>
             </main>
             <Link href={'/demo'}>to demo</Link>
