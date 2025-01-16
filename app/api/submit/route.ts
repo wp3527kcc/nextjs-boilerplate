@@ -27,3 +27,21 @@ export async function POST(request: NextRequest) {
         )
     }
 }
+
+export async function GET() {
+    const now = new Date();
+    try {
+        // Process the request
+        return NextResponse.json(
+            {message: 'Successfully processed POST request', now},
+            {status: 201}
+        )
+    } catch (e) {
+        console.log(e)
+        // Handle any errors
+        return NextResponse.json(
+            {error: 'Internal Server Error'},
+            {status: 500}
+        )
+    }
+}
