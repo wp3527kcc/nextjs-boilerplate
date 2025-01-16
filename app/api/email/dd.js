@@ -10,7 +10,7 @@ async function logToFeiShu(
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     if (count++ < maxCount) {
         console.time('t1')
-        await fetch(webhookUrl, {
+        const res = await fetch(webhookUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,9 @@ async function logToFeiShu(
                 msg_type: "interactive",
             }),
         });
+        const data = await res.json();
         console.timeEnd('t1')
+        console.log(data)
     }
 }
 logToFeiShu('hello world')
