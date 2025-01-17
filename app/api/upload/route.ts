@@ -12,6 +12,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     const blob = await put(prefix + filename || 'hhh', request.body!, {
         access: 'public',
     });
-    await sql(`insert into avatarlist("previewUrl", "downloadUrl") values('${blob.url}', '${blob.downloadUrl}')`);
+    await sql(`insert into avatarlist("previewUrl", "downloadUrl", "filename") values('${blob.url}', '${blob.downloadUrl}', '${filename}')`);
     return NextResponse.json(blob, {status: 200});
 }

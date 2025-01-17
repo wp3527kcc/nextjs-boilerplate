@@ -1,8 +1,10 @@
 import Image from "next/image";
 import {Table} from 'antd'
 import {Suspense} from 'react'
+import { list } from '@vercel/blob';
 import Counter from './components/Count'
 import UploadArea from "@/app/components/UploadArea";
+import UploadClient from "@/app/components/UploadClient";
 import Link from "next/link";
 import {connection} from 'next/server'
 import {getRedisVal, getUserList} from "@/app/action";
@@ -26,9 +28,9 @@ const tableColumns = [
 export default async function Home() {
     console.log('rerender', new Date());
     await connection()
+    const response = await list({prefix: 'spider', limit: 8});
     const posts = getRedisVal(countRedisKey)
     const data = await getUserList()
-
     return (
         <div
             className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -55,6 +57,7 @@ export default async function Home() {
                 <Suspense fallback={<div>Loading...</div>}>
                     <UploadArea/>
                 </Suspense>
+                <UploadClient />
             </main>
             <Link href={'/demo'}>to demo</Link>
             <section className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -65,6 +68,11 @@ export default async function Home() {
                     pagination={{pageSize: 5}}
                 />
             </section>
+            {response.blobs.map((blob) => (
+                <a key={blob.url} href={blob.url} >
+                    {blob.pathname}
+                </a>
+            ))}
         </div>
     );
 }

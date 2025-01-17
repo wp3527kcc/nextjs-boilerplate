@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
             {message: 'Successfully processed POST request', data: body, list: await getUserList()},
             {status: 201}
         )
-    } catch  {
+    } catch {
         // Handle any errors
         return NextResponse.json(
             {error: 'Internal Server Error'},

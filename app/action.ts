@@ -35,7 +35,7 @@ export async function putFile(comment: string) {
 }
 
 const redisHeaders = new Headers({
-    Authorization: 'Bearer AdHqAAIjcDE2ZjRkZGFmYzUyODA0YjQ2YTBkOTM4Y2U3Y2E5M2I1NXAxMA'
+    Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`
 })
 
 export async function syncRedis(key: string, isAdd = false) {
