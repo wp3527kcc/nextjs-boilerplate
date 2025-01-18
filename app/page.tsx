@@ -4,6 +4,7 @@ import { list } from '@vercel/blob';
 import Counter from './components/Count'
 import UploadArea from "@/app/components/UploadArea";
 import UploadClient from "@/app/components/UploadClient";
+import BlobList from "@/app/components/BlobList";
 import Link from "next/link";
 import { connection } from 'next/server'
 import { getRedisVal, getUserList } from "@/app/action";
@@ -13,7 +14,10 @@ import CommentList from "./components/CommentList";
 export default async function Home() {
     console.log('rerender', new Date());
     await connection()
-    const response = await list({ prefix: 'spider', limit: 8 });
+    const response = await list({
+        prefix: '',
+        // limit: Infinity 
+    });
     const posts = getRedisVal(countRedisKey)
     const postCommentList = getUserList(1)
     return (
@@ -44,17 +48,18 @@ export default async function Home() {
                 </Suspense>
                 <UploadClient />
                 {/* <Suspense fallback={<div>Loading...</div>}> */}
-                    <CommentList postCommentList={postCommentList} />
+                <CommentList postCommentList={postCommentList} />
                 {/* </Suspense> */}
             </main>
             <Link href={'/demo'}>to demo</Link>
 
             <UploadArea />
-            {response.blobs.map((blob) => (
-                <a key={blob.url} href={blob.url} >
+            {/* {response.blobs.map((blob) => (
+                <a key={blob.url} href={blob.url} target="_blank">
                     {blob.pathname}
                 </a>
-            ))}
+            ))} */}
+            <BlobList blobs={response.blobs} />
         </div>
     );
 }

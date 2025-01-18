@@ -65,6 +65,6 @@ export async function getUserList(pageNumber = 1, pageSize = 5,) {
     const t1 = Date.now() - startTime
     const [{ count }] = await sql('select count(*) FROM users')
     const t2 = Date.now() - startTime
-    console.log(t1, t2)
+    console.log('sql query time',t1, t2,)
     return { total: count, list, };
 }

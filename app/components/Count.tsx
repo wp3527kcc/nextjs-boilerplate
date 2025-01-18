@@ -16,14 +16,14 @@ function Counter({posts}: { posts: Promise<number> }) {
     const [messageApi, contextHolder] = message.useMessage();
     const initialCount = use(posts)
     const [count, setCount] = useState(initialCount)
-    const [commentLoading, setCommentLoading] = useState(false)
+    const [commentLoading, setCommentLoading] = useState(true)
     const [syncLoading, setSyncLoading] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [commentList, setCommentList] = useState<{ comment: string }[]>([])
     console.log(commentList)
 
     function getCommentList() {
-        setCommentLoading(true)
+        // setCommentLoading(true)
         console.time('t1')
         fetchComents().then(result => {
             setCommentList(result)

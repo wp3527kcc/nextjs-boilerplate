@@ -32,7 +32,6 @@ export default function AvatarUploadPage() {
                                 setPercent(progressEvent.percentage)
                             }
                         });
-
                         setBlob(newBlob);
                     } finally {
                         setLoading(false)
@@ -44,8 +43,12 @@ export default function AvatarUploadPage() {
                 {loading && <Progress percent={percent} />}
             </form>
             {blob && (
-                <div>
-                    Blob url: <a href={blob.url} target='__blank__'>{blob.url}</a>
+                <div style={{ overflowX: 'auto', maxWidth: '80vw' }}>
+                    Blob url: <a href={blob.url} target='_blank'>{blob.pathname}</a>
+                    <br />
+                    <span style={{ color: 'CaptionText' }}>contentDisposition：{blob.contentDisposition}</span>
+                    <br />
+                    <span style={{ color: 'CaptionText' }}>contentType：{blob.contentType}</span>
                 </div>
             )}
         </>
