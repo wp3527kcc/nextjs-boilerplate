@@ -1,36 +1,21 @@
 import Image from "next/image";
-import {Table} from 'antd'
-import {Suspense} from 'react'
+import { Suspense } from 'react'
 import { list } from '@vercel/blob';
 import Counter from './components/Count'
 import UploadArea from "@/app/components/UploadArea";
 import UploadClient from "@/app/components/UploadClient";
 import Link from "next/link";
-import {connection} from 'next/server'
-import {getRedisVal, getUserList} from "@/app/action";
-import {countRedisKey} from "@/app/constants";
+import { connection } from 'next/server'
+import { getRedisVal, getUserList } from "@/app/action";
+import { countRedisKey } from "@/app/constants";
+import CommentList from "./components/CommentList";
 
-const tableColumns = [
-    {
-        title: 'id',
-        dataIndex: 'id',
-
-    },
-    {
-        title: 'name',
-        dataIndex: 'name',
-    },
-    {
-        title: 'email',
-        dataIndex: 'email',
-    },
-]
 export default async function Home() {
     console.log('rerender', new Date());
     await connection()
-    const response = await list({prefix: 'spider', limit: 8});
+    const response = await list({ prefix: 'spider', limit: 8 });
     const posts = getRedisVal(countRedisKey)
-    const data = await getUserList()
+    const postCommentList = getUserList(1)
     return (
         <div
             className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -52,22 +37,19 @@ export default async function Home() {
                     priority
                 />
                 <Suspense fallback={<div>Loading...</div>}>
-                    <Counter posts={posts}/>
+                    <Counter posts={posts} />
                 </Suspense>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <UploadArea/>
+                    <UploadArea />
                 </Suspense>
                 <UploadClient />
+                {/* <Suspense fallback={<div>Loading...</div>}> */}
+                    <CommentList postCommentList={postCommentList} />
+                {/* </Suspense> */}
             </main>
             <Link href={'/demo'}>to demo</Link>
-            <section className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-                <Table
-                    dataSource={data}
-                    rowKey={'id'}
-                    columns={tableColumns}
-                    pagination={{pageSize: 5}}
-                />
-            </section>
+
+            <UploadArea />
             {response.blobs.map((blob) => (
                 <a key={blob.url} href={blob.url} >
                     {blob.pathname}

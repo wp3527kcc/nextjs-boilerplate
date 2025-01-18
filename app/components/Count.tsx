@@ -20,6 +20,7 @@ function Counter({posts}: { posts: Promise<number> }) {
     const [syncLoading, setSyncLoading] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [commentList, setCommentList] = useState<{ comment: string }[]>([])
+    console.log(commentList)
 
     function getCommentList() {
         setCommentLoading(true)
@@ -90,7 +91,7 @@ function Counter({posts}: { posts: Promise<number> }) {
                 </Button>
             </Space>
             <Table dataSource={commentList.filter(Boolean)}
-                   id={'id'}
+                   rowKey={'id'}
                    columns={[{key: 'comment', dataIndex: 'comment', title: '评论内容'}]}
                    loading={commentLoading}
                    pagination={{pageSize: 5}}

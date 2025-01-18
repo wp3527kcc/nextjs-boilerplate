@@ -1,11 +1,14 @@
 'use client';
 
-import {type PutBlobResult} from '@vercel/blob';
-import {upload} from '@vercel/blob/client';
-import {useState, useRef} from 'react';
+import { type PutBlobResult } from '@vercel/blob';
+import { upload } from '@vercel/blob/client';
+import { useState, useRef } from 'react';
+import { Button, Progress } from 'antd';
 
 export default function AvatarUploadPage() {
     const inputFileRef = useRef<HTMLInputElement>(null);
+    const [percent, setPercent] = useState(0)
+    const [loading, setLoading] = useState(false)
     const [blob, setBlob] = useState<PutBlobResult | null>(null);
     return (
         <>
@@ -20,22 +23,29 @@ export default function AvatarUploadPage() {
                     }
 
                     const file = inputFileRef.current.files[0];
+                    setLoading(true)
+                    try {
+                        const newBlob = await upload('clientUpload/' + file.name, file, {
+                            access: 'public',
+                            handleUploadUrl: '/api/clientUpload',
+                            onUploadProgress: (progressEvent) => {
+                                setPercent(progressEvent.percentage)
+                            }
+                        });
 
-                    const newBlob = await upload('clientUpload/' + file.name, file, {
-                        access: 'public',
-                        handleUploadUrl: '/api/clientUpload',
-                        // onUploadProgress: (event) => {}
-                    });
-
-                    setBlob(newBlob);
+                        setBlob(newBlob);
+                    } finally {
+                        setLoading(false)
+                    }
                 }}
             >
-                <input name="file" ref={inputFileRef} type="file" required/>
-                <button type="submit">Upload</button>
+                <input name="file" ref={inputFileRef} type="file" required />
+                <Button htmlType="submit" loading={loading}>Upload</Button>
+                {loading && <Progress percent={percent} />}
             </form>
             {blob && (
                 <div>
-                    Blob url: <a href={blob.url}>{blob.url}</a>
+                    Blob url: <a href={blob.url} target='__blank__'>{blob.url}</a>
                 </div>
             )}
         </>

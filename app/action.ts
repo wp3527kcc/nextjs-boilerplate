@@ -1,13 +1,13 @@
 'use server'
-import {neon} from "@neondatabase/serverless"; // Your database client
-import {put} from "@vercel/blob";
+import { neon } from "@neondatabase/serverless"; // Your database client
+import { put } from "@vercel/blob";
 import {
     // cookies,
     headers
 } from 'next/headers'
 
 const sql = neon(`${process.env.DATABASE_URL}`);
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+// const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function fetchUsers(key: string) {
     const data = await sql('SELECT * FROM users') as { id: string, name: string, email: string }[];
@@ -30,7 +30,7 @@ export async function createComment(comment: string) {
 // }
 
 export async function putFile(comment: string) {
-    const {url} = await put('articles/blob.txt', comment, {access: 'public'});
+    const { url } = await put('articles/blob.txt', comment, { access: 'public' });
     return url
 }
 
@@ -54,12 +54,17 @@ export async function getRedisVal(key: string) {
         // cache: 'no-store',
         // next: { revalidate: 10 },
     })
-    const {result} = await res.json()
-    await sleep(500)
+    const { result } = await res.json()
+    // await sleep(500)
     return +result
 }
 
-export async function getUserList() {
-    const data = await sql('SELECT * FROM users') as { id: string, name: string, email: string }[];
-    return data;
+export async function getUserList(pageNumber = 1, pageSize = 5,) {
+    const startTime = Date.now()
+    const list = await sql(`SELECT * FROM users limit ${pageSize} offset ${pageSize * (pageNumber - 1)}`) as { id: string, name: string, email: string }[];
+    const t1 = Date.now() - startTime
+    const [{ count }] = await sql('select count(*) FROM users')
+    const t2 = Date.now() - startTime
+    console.log(t1, t2)
+    return { total: count, list, };
 }

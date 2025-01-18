@@ -1,6 +1,6 @@
 {
   "crons": [{
-    "path": "/api/email",
+    "path": "/api/email?fron=cron",
     "schedule": "10 16 * * *"
   },{
     "path": "/api/submit",
