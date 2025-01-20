@@ -1,10 +1,19 @@
-import type { NextConfig } from "next";
+import type {NextConfig} from "next";
 
 const nextConfig: NextConfig = {
-    // images: {
-    //     loader: 'custom',
-    //     loaderFile: './my-loader.ts',
-    // },
+    images: {
+        // remotePatterns: [
+        //     {
+        //         protocol: 'https',
+        //         hostname: 'avatars.githubusercontent.com',
+        //         port: '',
+        //         pathname: '/**',
+        //         search: '',
+        //     },
+        // ],
+        // loader: 'custom',
+        // loaderFile: './my-loader.ts',
+    },
 };
 
 export default nextConfig;

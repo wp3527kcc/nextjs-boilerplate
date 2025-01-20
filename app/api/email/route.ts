@@ -1,4 +1,4 @@
-import {NextResponse} from 'next/server'
+import { NextResponse } from 'next/server'
 
 async function logToFeiShu(
     content: string,
@@ -37,15 +37,15 @@ export async function GET() {
         const response = await logToFeiShu('has request ' + now);
         // Process the request
         return NextResponse.json(
-            {message: 'Successfully processed POST request', now, response},
-            {status: 201}
+            { message: 'Successfully processed POST request', now, response },
+            { status: 201 }
         )
     } catch (e) {
         console.log(e)
         // Handle any errors
         return NextResponse.json(
-            {error: 'Internal Server Error'},
-            {status: 500}
+            { error: 'Internal Server Error' },
+            { status: 500 }
         )
     }
 }

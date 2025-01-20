@@ -20,7 +20,6 @@ function Counter({posts}: { posts: Promise<number> }) {
     const [syncLoading, setSyncLoading] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [commentList, setCommentList] = useState<{ comment: string }[]>([])
-    console.log(commentList)
 
     function getCommentList() {
         // setCommentLoading(true)
@@ -35,8 +34,8 @@ function Counter({posts}: { posts: Promise<number> }) {
 
     async function setCountAndSync(isAdd: boolean) {
         setSyncLoading(true)
-        syncRedis(countRedisKey, isAdd).then((newResp) => {
-            setCount(newResp.result)
+        syncRedis(countRedisKey, isAdd).then((result) => {
+            setCount(result)
         }).finally(() => {
             setSyncLoading(false)
         })
