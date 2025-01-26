@@ -7,10 +7,10 @@ import { Redis } from '@upstash/redis'
 //     headers
 // } from 'next/headers'
 
-const sql = neon(`${process.env.DATABASE_URL}`);
+const sql = neon(`${Deno.env.get("DATABASE_URL")}`);
 const redis = new Redis({
     url: 'https://brief-kid-53738.upstash.io',
-    token: process.env.KV_REST_API_TOKEN,
+    token: Deno.env.get('KV_REST_API_TOKEN'),
 })
 // const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 

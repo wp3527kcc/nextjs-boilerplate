@@ -3,7 +3,7 @@ import {put} from '@vercel/blob';
 import {neon} from "@neondatabase/serverless"; // Your database client
 
 const prefix = 'avatar/';
-const sql = neon(`${process.env.DATABASE_URL}`);
+const sql = neon(`${Deno.env.get("DATABASE_URL")}`);
 export async function POST(request: Request): Promise<NextResponse> {
     const {searchParams} = new URL(request.url);
     const filename = searchParams.get('filename');
