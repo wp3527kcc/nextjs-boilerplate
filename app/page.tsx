@@ -10,12 +10,10 @@ import {connection} from 'next/server'
 import {getRedisVal, getUserList} from "@/app/action";
 import {countRedisKey} from "@/app/constants";
 import CommentList from "./components/CommentList";
-import {auth} from "@/auth";
 
 export default async function Home() {
     console.log('rerender on Home');
     await connection()
-    const session = await auth();
     const response = await list({
         prefix: '',
         // limit: Infinity
