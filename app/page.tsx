@@ -10,7 +10,6 @@ import {connection} from 'next/server'
 import {getRedisVal, getUserList} from "@/app/action";
 import {countRedisKey} from "@/app/constants";
 import CommentList from "./components/CommentList";
-import SignIn from "@/app/components/sign-in";
 import {auth} from "@/auth";
 
 export default async function Home() {
@@ -44,7 +43,6 @@ export default async function Home() {
                 {/*    height={38}*/}
                 {/*    priority*/}
                 {/*/>*/}
-                <SignIn session={session}/>
                 <Suspense fallback={<div>Loading...</div>}>
                     <Counter posts={posts}/>
                 </Suspense>
