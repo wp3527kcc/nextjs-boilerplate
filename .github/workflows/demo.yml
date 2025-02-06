@@ -21,8 +21,8 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: npm install  # 如果有依赖需要安装
+#      - name: Install dependencies
+#        run: npm install  # 如果有依赖需要安装
 
       - name: Run JavaScript script
         run: node ciScript.js
