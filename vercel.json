@@ -1,9 +1,6 @@
 {
   "crons": [{
     "path": "/api/email?fron=cron",
-    "schedule": "10 16 * * *"
-  },{
-    "path": "/api/submit",
-    "schedule": "10 23 * * *"
+    "schedule": "15 15 * * *"
   }]
 }
